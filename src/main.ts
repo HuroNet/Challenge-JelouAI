@@ -10,6 +10,9 @@ class Server {
     this.app.get("/", (req, res) => {
       res.send("Hello, World!");
     });
+    this.app.patch("/", (req, res) => {
+      res.send("Patch method received!");
+    });
   }
   listen() {
     this.app.listen(this.port, () => {
