@@ -8,7 +8,7 @@ class Server {
   }
   private initializeRoutes() {
     this.app.get("/", (req, res) => {
-      res.send("Hello, World!");
+      res.send("Technical test for JelouAI!");
     });
     this.app.patch("/", (req, res) => {
       res.send("Patch method received!");
