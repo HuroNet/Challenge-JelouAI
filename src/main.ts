@@ -1,34 +1,29 @@
-import { prisma } from "../prismaClient";
-import express from "express";
+// src/server.ts
+import express, { Request, Response, NextFunction } from 'express';
+import { registerRoutes } from './shared/routes';
 
 class Server {
-  app = express();
-  port = 3000;
+  public app = express();
+  public port = 3000;
 
   constructor() {
-    this.initializeRoutes();
-  }
+    this.app.use(express.json());
 
-  private initializeRoutes() {
-    this.app.get("/", async (req, res) => {
-      try {
-        // Ejemplo simple: cuenta cuántos contactos hay en la base de datos
-        const contacts = await prisma.contact.findMany();
-        res.json(contacts);
-      } catch (error) {
-        console.log(error)
-        res.status(500).send("Error connecting to the database");
-      }
+    registerRoutes(this.app);  
+
+    this.app.get('/', (req, res) => {
+      res.send('API running...');
     });
 
-    this.app.patch("/", (req, res) => {
-      res.send("Patch method received!");
+    this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+      console.error(err.stack);
+      res.status(500).json({ message: 'Internal Server Error' });
     });
   }
 
-  listen() {
+  public listen() {
     this.app.listen(this.port, () => {
-      console.log(`Server is running on http://localhost:${this.port}`);
+      console.log(`Server running on http://localhost:${this.port}`);
     });
   }
 }
