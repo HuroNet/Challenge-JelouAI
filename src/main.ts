@@ -8,16 +8,18 @@ class Server {
   constructor() {
     this.app.use(express.json());
 
-    registerRoutes(this.app);  
+    registerRoutes(this.app);
 
     this.app.get('/', (req, res) => {
       res.send('API running...');
     });
 
-    this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-      console.error(err.stack);
-      res.status(500).json({ message: 'Internal Server Error' });
-    });
+    this.app.use(
+      (err: Error, req: Request, res: Response, next: NextFunction) => {
+        console.error(err.stack);
+        res.status(500).json({ message: 'Internal Server Error' });
+      },
+    );
   }
 
   public listen() {
